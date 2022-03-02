@@ -36,20 +36,20 @@ fun App() {
         var cuboUI by remember { mutableStateOf(Cube(100,Point(300f,300f,300f))) }
         var grados by remember { mutableStateOf(0) }
         Row {
-            Button(onClick = { cuboUI.rotateY(1f);grados += 5 }) {
+            Button(onClick = { cuboUI.rotateY(1f);grados += 1 }) {
                 Text("Rotar 5ºY: $grados")
             }
-            Button(onClick = { cuboUI.rotateX(1f);grados += 5 }) {
+            Button(onClick = { cuboUI.rotateX(1f);grados += 1 }) {
                 Text("Rotar 5ºX: $grados")
             }
-            Button(onClick = { cuboUI.rotateZ(1f);grados += 5 }) {
+            Button(onClick = { cuboUI.rotateZ(1f);grados += 1 }) {
                 Text("Rotar 5ºZ: $grados")
             }
         }
                 Text("Rotar 5ºY: $grados")
                 for (v in cuboUI.vertices) {
                     Box(
-                        modifier = Modifier.absoluteOffset { IntOffset(v.x.toInt(),v.z.toInt()) }.size(10.dp)
+                        modifier = Modifier.absoluteOffset { IntOffset(v.x.toInt(),v.z.toInt()) }.size(6.dp)
                             .background(color = Color.Red)
                     )
                 }
