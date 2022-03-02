@@ -49,10 +49,10 @@ class Cube(
 
     fun rotateZ(deg:Float) {
         for (v in vertices) {
-            var newY = (v.y-center.y)*cos(deg) - (v.x-center.x)*sin(deg) + center.y
-            var newX = (v.y-center.y)*sin(deg) + (v.x-center.x)*cos(deg) + center.x
-            v.y = newY
+            var newX = (v.x-center.x)*cos(deg) - (v.y-center.y)*sin(deg) + center.x
+            var newY = (v.x-center.x)*sin(deg) + (v.y-center.y)*cos(deg) + center.y
             v.x = newX
+            v.y = newY
         }
     }
 }

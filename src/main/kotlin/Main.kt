@@ -36,13 +36,13 @@ fun App() {
         var cuboUI by remember { mutableStateOf(Cube(100,Point(300f,300f,300f))) }
         var grados by remember { mutableStateOf(0) }
         Row {
-            Button(onClick = { cuboUI.rotateY(5f);grados += 5 }) {
+            Button(onClick = { cuboUI.rotateY(1f);grados += 5 }) {
                 Text("Rotar 5ºY: $grados")
             }
-            Button(onClick = { cuboUI.rotateX(5f);grados += 5 }) {
+            Button(onClick = { cuboUI.rotateX(1f);grados += 5 }) {
                 Text("Rotar 5ºX: $grados")
             }
-            Button(onClick = { cuboUI.rotateZ(5f);grados += 5 }) {
+            Button(onClick = { cuboUI.rotateZ(1f);grados += 5 }) {
                 Text("Rotar 5ºZ: $grados")
             }
         }
