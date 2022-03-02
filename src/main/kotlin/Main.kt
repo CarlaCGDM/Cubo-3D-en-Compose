@@ -1,4 +1,6 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
@@ -21,69 +23,55 @@ import androidx.compose.ui.window.application
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Thread.sleep
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
-//Puntos:
-//Cara frontal:
-var p1 = mutableListOf(200,200,0) //esquina superior izquierda
-var p2 = mutableListOf(400,200,0) //esquina superior derecha
-var p3 = mutableListOf(200,400,0) //esquina inferior izquierda
-var p4 = mutableListOf(400,400,0) //esquina inferior derecha
-
-//Cara trasera:
-
-var p5 = mutableListOf(200,200,2)//esquina superior izquierda
-var p6 = mutableListOf(400,200,2) //esquina superior derecha
-var p7 = mutableListOf(200,400,2) //esquina inferior izquierda
-var p8 = mutableListOf(400,400,2) //esquina inferior derecha
-
-//Relaciones:
-val edges = mapOf(
-    p1 to listOf(p2,p3,p5),
-    p2 to listOf(p1,p4,p6),
-    p3 to listOf(p1,p4,p7),
-    p4 to listOf(p2,p3,p8),
-    p5 to listOf(p1,p6,p7),
-    p6 to listOf(p2,p5,p8),
-    p7 to listOf(p3,p5,p8),
-    p8 to listOf(p4,p7,p6),
-)
-
-var vertices = listOf(p1,p2,p3,p4,p5,p6,p7,p8)
-
-
-
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun App() {
-    var height by remember { mutableStateOf(0) }
-    var width by remember { mutableStateOf(0) }
-
-    rememberCoroutineScope().launch {
-        while (true) {
-            delay(50)
-            if (height == 25) {height = -25} else {height++}
-            if (width == 25) {width = -25} else {width++}
-        }
-    }
+    var cubo = Cube(100,Point(300f,300f,300f))
 
     Box(modifier=Modifier.fillMaxSize()) {
-        for (v in vertices) {
-            Box(
-                modifier = Modifier.absoluteOffset { IntOffset(v[0] + height*v[2], v[1] + width*v[2]) }.size(10.dp)
-                    .background(color = Color.Red)
-            )
-        }
-        for (a in edges.keys) {
-            for (b in edges[a]!!) {
-                Box(modifier = Modifier.absoluteOffset {
-                    IntOffset(
-                        ((a[0] + b[0]) / 2)+(height)*((a[2] + b[2]) / 2),
-                        ((a[1] + b[1]) / 2)+(width)*((a[2] + b[2]) / 2),
-                    )
-                }.size(5.dp).background(color = Color.Green))
-                
+        var cuboUI by remember { mutableStateOf(Cube(100,Point(300f,300f,300f))) }
+        var grados by remember { mutableStateOf(0) }
+        Row {
+            Button(onClick = { cuboUI.rotateY(5f);grados += 5 }) {
+                Text("Rotar 5ºY: $grados")
+            }
+            Button(onClick = { cuboUI.rotateX(5f);grados += 5 }) {
+                Text("Rotar 5ºX: $grados")
+            }
+            Button(onClick = { cuboUI.rotateZ(5f);grados += 5 }) {
+                Text("Rotar 5ºZ: $grados")
             }
         }
+                Text("Rotar 5ºY: $grados")
+                for (v in cuboUI.vertices) {
+                    Box(
+                        modifier = Modifier.absoluteOffset { IntOffset(v.x.toInt(),v.z.toInt()) }.size(10.dp)
+                            .background(color = Color.Red)
+                    )
+                }
+        for (a in cuboUI.edges.keys) {
+            for (b in cuboUI.edges[a]!!) {
+                //distancia entre los puntos:
+                var d = sqrt((a.x-b.x).pow(2)+(a.z-b.z).pow(2))
+                var distancias = listOf(d/6,d/5,d/4,d/3,d/2,d/3*2,d/4*2,d/5*2,d/6*2)
 
+                for (distancia in distancias) {
+                    var cX = a.x - (distancia*(a.x-b.x))/d
+                    var cZ = a.z - (distancia*(a.z-b.z))/d
+                    Box(modifier = Modifier.absoluteOffset {
+                        IntOffset(
+                            cX.toInt(),
+                            cZ.toInt(),
+                        )
+
+                    }.size(4.dp).background(color = Color.Green))
+                }
+            }
+        }
     }
 
 }
