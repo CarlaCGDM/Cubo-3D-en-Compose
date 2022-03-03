@@ -57,7 +57,7 @@ fun App() {
             for (b in cuboUI.edges[a]!!) {
                 //distancia entre los puntos:
                 var d = sqrt((a.x-b.x).pow(2)+(a.z-b.z).pow(2))
-                var distancias = listOf(d/6,d/5,d/4,d/3,d/2,d/3*2,d/4*2,d/5*2,d/6*2)
+                var distancias = listOf(d/8,d/4, d/3,d/2,d/3*2,d/4*2,d/8*2)
 
                 for (distancia in distancias) {
                     var cX = a.x - (distancia*(a.x-b.x))/d
