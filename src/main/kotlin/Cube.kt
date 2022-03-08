@@ -55,4 +55,11 @@ class Cube(
             v.y = newY
         }
     }
+
+    fun scaleY(units:Int) {
+        for (v in vertices) {
+            if (v.y > center.y) {v.y -= units}
+            if (v.y < center.y) {v.y += units}
+        }
+    }
 }
